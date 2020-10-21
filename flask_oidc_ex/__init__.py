@@ -537,8 +537,9 @@ class OpenIDConnect(object):
             @wraps(view_func)
             def decorated(*args, **kwargs):
                 pre, tkn, post = self.get_access_token().split('.')
-                access_token = json.loads(b64decode(tkn + '===')) # fix the potentially missing padding
-                if client in access_token['resource_access'] and role in access_token['resource_access'][client]['roles']:
+                access_token = json.loads(b64decode(tkn + '==='))  # fix the potentially missing padding
+                if client in access_token['resource_access'] and \
+                        role in access_token['resource_access'][client]['roles']:
                     return view_func(*args, **kwargs)
                 else:
                     return abort(403)
